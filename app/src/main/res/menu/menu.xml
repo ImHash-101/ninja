@@ -1,0 +1,10 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    >
+
+    <item android:id="@+id/addUser" android:title="添加账号" />
+    <item android:id="@+id/rmSelectedUser" android:title="删除所选账号"/>
+    <item android:id="@+id/rmAllUser" android:title="删除所以账号"/>
+    <item android:id="@+id/check" android:title="检测账号"/>
+    <item android:id="@+id/test" android:title="测试"/>
+
+</menu>
