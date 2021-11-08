@@ -18,7 +18,7 @@ public class Login {
 
 
             HttpClient httpClient = new HttpClient();
-            PostMethod postMethod = new PostMethod("http://ninja.goup.top:6002/api/cklogin");
+            PostMethod postMethod = new PostMethod("http://1.116.164.17:5701/api/cklogin");
             postMethod.addRequestHeader("Content-Type", "application/json");
             int code = 0;
             StringRequestEntity requestEntity = new StringRequestEntity(jsonObject.toString(),"application/json","utf-8");

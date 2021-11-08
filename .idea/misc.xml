@@ -3,12 +3,18 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/a2505/AndroidStudioProjects/Ninja/app/src/main/res/drawable/base_progress_bg.xml" value="0.21822916666666667" />
         <entry key="..\:/Users/a2505/AndroidStudioProjects/Ninja/app/src/main/res/drawable/cricle.xml" value="0.378125" />
+        <entry key="..\:/Users/a2505/AndroidStudioProjects/Ninja/app/src/main/res/drawable/grey_border_shape.xml" value="0.378125" />
+        <entry key="..\:/Users/a2505/AndroidStudioProjects/Ninja/app/src/main/res/drawable/selector_backgroundreversal.xml" value="0.378125" />
         <entry key="..\:/Users/a2505/AndroidStudioProjects/Ninja/app/src/main/res/drawable/shape_corner.xml" value="0.378125" />
+        <entry key="..\:/Users/a2505/AndroidStudioProjects/Ninja/app/src/main/res/drawable/white_border_shape.xml" value="0.378125" />
         <entry key="..\:/Users/a2505/AndroidStudioProjects/Ninja/app/src/main/res/layout/activity_detail.xml" value="0.2957427536231884" />
         <entry key="..\:/Users/a2505/AndroidStudioProjects/Ninja/app/src/main/res/layout/activity_main.xml" value="0.31068840579710144" />
         <entry key="..\:/Users/a2505/AndroidStudioProjects/Ninja/app/src/main/res/layout/activity_web.xml" value="0.3619791666666667" />
+        <entry key="..\:/Users/a2505/AndroidStudioProjects/Ninja/app/src/main/res/layout/base_dialog.xml" value="0.3619791666666667" />
         <entry key="..\:/Users/a2505/AndroidStudioProjects/Ninja/app/src/main/res/menu/main_menu.xml" value="0.3619791666666667" />
+        <entry key="..\:/Users/a2505/AndroidStudioProjects/Ninja/app/src/main/res/xml/file_paths.xml" value="0.3578125" />
         <entry key="..\:/Users/a2505/AppData/Local/Android/Sdk/platforms/android-31/data/res/layout/simple_list_item_1.xml" value="0.3619791666666667" />
         <entry key="..\:/Users/a2505/AppData/Local/Android/Sdk/platforms/android-31/data/res/layout/simple_list_item_2.xml" value="0.3619791666666667" />
         <entry key="..\:/Users/a2505/AppData/Local/Android/Sdk/platforms/android-31/data/res/layout/simple_list_item_multiple_choice.xml" value="0.3111413043478261" />

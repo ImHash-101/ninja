@@ -3,6 +3,9 @@
     package="top.goup.ninja">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
+
 
     <application
         android:allowBackup="true"
@@ -12,10 +15,20 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Ninja"
         android:usesCleartextTraffic="true">
-        <service
-            android:name=".MyService"
+
+        <receiver android:name="top.goup.update.DownloadReceiver"
             android:enabled="true"
-            android:exported="true"></service>
+            android:exported="true"></receiver>
+
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="top.goup.update.fileProvider"
+            android:grantUriPermissions="true"
+            android:exported="false">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
 
         <activity
             android:name=".MainActivity"
@@ -27,7 +40,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".Web" />
-        <activity android:name=".Detail" />
+        <activity android:name=".Detail"/>
     </application>
 
 </manifest>

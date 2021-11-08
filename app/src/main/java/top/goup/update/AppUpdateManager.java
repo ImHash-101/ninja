@@ -1,10 +1,9 @@
 package top.goup.update;
 
+import android.app.AlertDialog;
 import android.app.DownloadManager;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.net.Uri;
@@ -13,7 +12,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 
-import androidx.appcompat.app.AlertDialog;
+
 
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.methods.GetMethod;
@@ -43,10 +42,9 @@ public class AppUpdateManager {
 
     int last_version_code;
     int version_code;
-
+    String version_name;
     public AppUpdateManager(Context context){
         mContext =context;
-
     }
 
 
@@ -63,8 +61,8 @@ public class AppUpdateManager {
                     info = map;
                     version_code = getVersionCode(mContext);
                     last_version_code = Integer.parseInt(map.get("version"));
+                    version_name = map.get("version_name");
                     if(last_version_code>version_code)ShowDialog();
-
                     break;
 
                 case ERROR:
@@ -83,17 +81,18 @@ public class AppUpdateManager {
         AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
         builder.setTitle("有新版本");
         builder.setMessage("更新内容");
-        builder.setPositiveButton("更新", new DialogInterface.OnClickListener() {
+        builder.setNegativeButton("暂不", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        builder.setPositiveButton("立即更新", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 downLoadApk();
                 dialog.dismiss();
 
-            }
-        }); builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
             }
         });
         builder.show();
@@ -101,7 +100,7 @@ public class AppUpdateManager {
 
 
     private void downLoadApk() {
-        apkPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath() + File.separator + "ninja_"+last_version_code+".apk";
+        apkPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath() + File.separator + "ninja_"+version_name+".apk";
 
         //创建request对象
         DownloadManager.Request request=new DownloadManager.Request(Uri.parse(info.get("url")));
@@ -216,6 +215,10 @@ public class AppUpdateManager {
                     // 下载地址
                     else if (("url".equals(childElement.getNodeName()))) {
                         hashMap.put("url", childElement.getFirstChild().getNodeValue());
+                    }
+                    // 版本名
+                    else if(("version_name".equals(childElement.getNodeName()))){
+                        hashMap.put("version_name", childElement.getFirstChild().getNodeValue());
                     }
                 }
             }

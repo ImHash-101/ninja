@@ -27,6 +27,9 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+import top.goup.update.AppUpdateManager;
+import top.goup.update.BaseDialog;
+
 public class MainActivity extends AppCompatActivity {
     CookieDatabase database;
     CookieDao dao;
@@ -34,7 +37,8 @@ public class MainActivity extends AppCompatActivity {
     List<String> strS;
     ListView listView;
     ArrayAdapter<String> adapter;
-
+    final String dialog_title = "注意";
+    final String dialog_content = "点击右上角登录账户";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,14 +49,6 @@ public class MainActivity extends AppCompatActivity {
         strS = new ArrayList<>();
 
 
-
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                Cookie cookie = new Cookie("jd_KNXptIPgfuGY","AAJhaZ5zADBcyxiSaIdayK-GZfPz-fgHEAoTKzRl6wkVTJjI4y_aThS2P0PBOuPrcFkPXOQ11ag");
-                dao.insert(cookie);
-            }
-        }).start();
         adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, strS);
         listView = findViewById(R.id.lisView);
 
@@ -61,27 +57,34 @@ public class MainActivity extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Intent intent = new Intent(getApplicationContext(),Detail.class);
-                intent.putExtra("nickName",strS.get(i));
+                Intent intent = new Intent(getApplicationContext(), Detail.class);
+                intent.putExtra("nickName", strS.get(i));
                 startActivity(intent);
             }
         });
+
+
+        AppUpdateManager appUpdateManager = new AppUpdateManager(this);
+        appUpdateManager.check();
+
+        new BaseDialog(this,dialog_title,dialog_content).show();
+
     }
 
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main_menu,menu);
+        getMenuInflater().inflate(R.menu.main_menu, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
 
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case R.id.addUser:
-                Intent intent = new Intent(getApplicationContext(),Web.class);
-                startActivityForResult(intent,1);
+                Intent intent = new Intent(getApplicationContext(), Web.class);
+                startActivityForResult(intent, 1);
                 break;
         }
 
@@ -102,14 +105,17 @@ public class MainActivity extends AppCompatActivity {
     //需在子线程运行
     private void loadData() {
         strS.clear();
+        updateAdapter();
         cookies = dao.getAll();
         for (int i = 0; i < cookies.size(); i++) {
-            strS.add(cookies.get(i).getNickName());
+            Cookie cookie = cookies.get(i);
+            strS.add(cookie.getNickName());
         }
         updateAdapter();
 
     }
-    private void updateAdapter(){
+
+    private void updateAdapter() {
         Message msg = new Message();
         msg.what = Constant.UPDATE_ADAPTER;
         uiHandler.sendMessage(msg);
@@ -119,6 +125,7 @@ public class MainActivity extends AppCompatActivity {
     private void addCookie(Cookie cookie) {
         dao.insert(cookie);
     }
+
     private final Handler uiHandler;
 
     {
@@ -137,25 +144,26 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode==1&&data!=null){
+        if (requestCode == 1 && data != null) {
             String c = data.getStringExtra("cookie");
-            if(c==null){
-                Toast.makeText(this,"无操作",Toast.LENGTH_SHORT).show();
+            if (c == null) {
+                Toast.makeText(this, "无操作", Toast.LENGTH_SHORT).show();
                 return;
             }
             Cookie cookie = delCookie(c);
-            if(cookie!=null){
-                Toast.makeText(this,"成功添加"+cookie.getPt_pin(),Toast.LENGTH_SHORT).show();
+            if (cookie != null) {
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
                         JSONObject json = Login.doIt(cookie);
+                        System.out.println();
                         Looper.prepare();
                         try {
                             String nickName = json.getJSONObject("data").getString("nickName");
+                            System.out.println();
                             cookie.setNickName(nickName);
-                            Toast.makeText(getApplicationContext(),json.getString("message"),Toast.LENGTH_SHORT).show();
-                        }catch (Exception e){
+                            Toast.makeText(getApplicationContext(), json.getString("message"), Toast.LENGTH_SHORT).show();
+                        } catch (Exception e) {
 
                         }
                         dao.insert(cookie);
@@ -163,22 +171,22 @@ public class MainActivity extends AppCompatActivity {
                         Looper.loop();
                     }
                 }).start();
-            }else {
-                Toast.makeText(this,"登录失败",Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(this, "登录失败", Toast.LENGTH_SHORT).show();
 
             }
         }
     }
 
-    public Cookie delCookie(String cookie){
-        if(cookie.contains("pt_key")||cookie.contains("pt_pin")){
+    public Cookie delCookie(String cookie) {
+        if (cookie.contains("pt_key") || cookie.contains("pt_pin")) {
             int i = 0;
             Cookie r = new Cookie();
             for (String ss : cookie.split(";")) {
-                if(r.getPt_pin()!=null&&r.getPt_key()!=null)return r;
-                if(ss.contains("pt_key")){
+                if (r.getPt_pin() != null && r.getPt_key() != null) return r;
+                if (ss.contains("pt_key")) {
                     r.setPt_key(ss.split("=")[1].trim());
-                }else if(ss.contains("pt_pin")){
+                } else if (ss.contains("pt_pin")) {
                     r.setPt_pin(ss.split("=")[1].trim());
                 }
             }

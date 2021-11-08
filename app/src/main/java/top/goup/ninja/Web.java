@@ -13,8 +13,12 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
+import top.goup.update.BaseDialog;
+
 public class Web extends AppCompatActivity {
     WebView webView;
+    final String dialog_title = "注意";
+    final String dialog_content = "请使用验证码登录，登录成功返回软件主界面即可。";
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,13 +44,13 @@ public class Web extends AppCompatActivity {
         CookieSyncManager.getInstance().startSync();
         CookieManager.getInstance().removeSessionCookie();
         CookieManager.getInstance().removeAllCookie();
-
+        new BaseDialog(this,dialog_title,dialog_content).show();
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        webView.loadUrl("https://m.jd.com");
+        webView.loadUrl("https://plogin.m.jd.com/login/login");
         Intent i=new Intent();
         i.putExtra("key",new String("keys"));
         setResult(1,i);

@@ -46,6 +46,7 @@ public class Cookie {
     }
 
     public String getNickName() {
+        if(nickName==null)return pt_pin;
         return nickName;
     }
 

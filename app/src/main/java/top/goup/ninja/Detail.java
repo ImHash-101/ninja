@@ -14,16 +14,21 @@ import androidx.room.Room;
 
 import org.json.JSONObject;
 
+import top.goup.update.BaseDialog;
+
 public class Detail extends AppCompatActivity {
     TextView allBean,nickNameW,pt_pin;
     CookieDatabase database;
     CookieDao dao;
     Button updateInfo,rmUser;
     Cookie cookie;
+    BaseDialog dialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
+
+
 
         updateInfo = findViewById(R.id.updateInfo);
         rmUser = findViewById(R.id.rmUser);
@@ -59,6 +64,7 @@ public class Detail extends AppCompatActivity {
             @Override
             public void run() {
                 cookie = dao.searchWithNick(nickName);
+                if(cookie==null)cookie=dao.searchWithPtPin(nickName);
                 Message msg = new Message();
                 msg.what = Constant.SEARCH_OK;
                 uiHandler.sendMessage(msg);
@@ -68,6 +74,8 @@ public class Detail extends AppCompatActivity {
         allBean = findViewById(R.id.allBean);
         nickNameW = findViewById(R.id.nickName);
         pt_pin = findViewById(R.id.pt_pin);
+
+
 
 
     }

@@ -14,6 +14,8 @@ public interface CookieDao {
     void insert(Cookie...cookies);
     @Query("SELECT * FROM Cookie WHERE nickName LIKE :nickName")
     Cookie searchWithNick(String nickName);
+    @Query("SELECT * FROM Cookie WHERE pt_pin LIKE :pt_pin")
+    Cookie searchWithPtPin(String pt_pin);
     @Query("SELECT * FROM Cookie")
     List<Cookie> getAll();
     @Update
